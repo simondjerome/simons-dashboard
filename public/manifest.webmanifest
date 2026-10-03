@@ -1,0 +1,17 @@
+{
+  "name": "Simon's Dashboard",
+  "short_name": "Dashboard",
+  "description": "Simon's personal weather, Todoist and news dashboard",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f141b",
+  "theme_color": "#18202b",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
