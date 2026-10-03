@@ -36,6 +36,13 @@ export default function Home() {
   const [loadingTasks, setLoadingTasks] = useState(true);
   const [loadingNews, setLoadingNews] = useState(true);
   const [theme, setTheme] = useState("light");
+  const [now, setNow] = useState(new Date());
+  const [rates, setRates] = useState(null);
+
+  useEffect(() => {
+    const timer = setInterval(() => setNow(new Date()), 1000);
+    return () => clearInterval(timer);
+  }, []);
 
   useEffect(() => {
     const saved = localStorage.getItem("dashboard-theme");
@@ -84,6 +91,15 @@ export default function Home() {
         setWeatherError("Couldn't load the weather right now.");
       }
     }, () => setWeatherError("Please allow location access to show your local weather."));
+  };
+
+  const loadRates = async () => {
+    try {
+      const res = await fetch("https://api.frankfurter.app/latest?from=CAD&to=USD,GBP,EUR,AUD,SGD");
+      if (!res.ok) throw new Error();
+      const data = await res.json();
+      setRates(data.rates || null);
+    } catch { setRates(null); }
   };
 
   const loadTasks = async () => {
@@ -136,6 +152,7 @@ export default function Home() {
     loadWeather();
     loadTasks();
     loadNews();
+    loadRates();
   }, []);
 
   const today = new Date().toLocaleDateString("en-CA", {
@@ -164,19 +181,29 @@ export default function Home() {
         </div>
       </header>
 
-      <section className="quickLaunch card">
-        <div className="cardTop"><h2>🚀 Quick Launch</h2><span>Apps</span></div>
-        <div className="quickLaunchGrid">
-          <a className="quickApp whatsapp" href="https://wa.me/" target="_blank" rel="noreferrer" aria-label="WhatsApp" title="WhatsApp"><span className="quickIcon">☎</span></a>
-          
-          <a className="quickApp teams" href="msteams://" aria-label="Microsoft Teams" title="Microsoft Teams"><span className="quickIcon">T</span></a>
-          <a className="quickApp addTask" href="https://todoist.com/app/task/new" target="_blank" rel="noreferrer" aria-label="Add Todoist task" title="Add Task"><span className="quickIcon">＋</span></a>
-          <button className="quickApp refreshApp" type="button" aria-label="Refresh dashboard" title="Refresh Dashboard" onClick={() => { loadWeather(); loadTasks(); loadNews(); }}><span className="quickIcon">↻</span></button>
-          
-        </div>
-      </section>
-
       <section className="grid">
+        <article className="card currencyCard">
+          <div className="cardTop"><h2>💱 Currency</h2><span>1 CAD</span></div>
+          {rates ? <div className="currencyList">
+            {[["USD","🇺🇸"],["GBP","🇬🇧"],["EUR","🇪🇺"],["AUD","🇦🇺"],["SGD","🇸🇬"]].map(([code,flag]) => (
+              <div className="currencyRow" key={code}><span>{flag} {code}</span><strong>{rates[code]?.toFixed(3)}</strong></div>
+            ))}
+          </div> : <div className="placeholder">Loading exchange rates…</div>}
+          <div className="cardNote">Indicative exchange rates</div>
+        </article>
+
+        <article className="card clocksCard">
+          <div className="cardTop"><h2>🌍 World Clocks</h2><span>Live</span></div>
+          <div className="clockList">
+            {[["London","Europe/London","🇬🇧"],["Singapore","Asia/Singapore","🇸🇬"],["Brisbane","Australia/Brisbane","🇦🇺"]].map(([city,zone,flag]) => (
+              <div className="clockRow" key={city}>
+                <div><strong>{flag} {city}</strong><span>{new Intl.DateTimeFormat("en-CA",{timeZone:zone,weekday:"short",month:"short",day:"numeric"}).format(now)}</span></div>
+                <time>{new Intl.DateTimeFormat("en-CA",{timeZone:zone,hour:"numeric",minute:"2-digit",second:"2-digit"}).format(now)}</time>
+              </div>
+            ))}
+          </div>
+        </article>
+
         <article className="card weather">
           <div className="cardTop"><h2>🌤️ Weather</h2><span>Today</span></div>
           {weather ? (
@@ -252,7 +279,7 @@ export default function Home() {
         </article>
       </section>
 
-      <footer>Simon’s Dashboard · Version 1.3</footer>
+      <footer>Simon’s Dashboard · Version 1.4</footer>
     </main>
   );
 }
