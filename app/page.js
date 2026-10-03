@@ -28,6 +28,7 @@ export default function Home() {
   const [weather, setWeather] = useState(null);
   const [weatherError, setWeatherError] = useState("");
   const [locationName, setLocationName] = useState("");
+  const [position, setPosition] = useState(null);
   const [tasks, setTasks] = useState([]);
   const [taskError, setTaskError] = useState("");
   const [news, setNews] = useState([]);
@@ -60,6 +61,7 @@ export default function Home() {
     navigator.geolocation.getCurrentPosition(async (pos) => {
       try {
         const { latitude, longitude } = pos.coords;
+        setPosition({ latitude, longitude });
         const weatherRes = await fetch(
           `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=auto`
         );
@@ -186,6 +188,24 @@ export default function Home() {
           ) : <div className="placeholder">{weatherError || "Finding your location…"}</div>}
         </article>
 
+        <article className="card locationCard">
+          <div className="cardTop"><h2>📍 My Location</h2><span>Current</span></div>
+          {position ? (
+            <>
+              <div className="mapFrame">
+                <iframe
+                  title="My current location"
+                  src={`https://www.openstreetmap.org/export/embed.html?bbox=${position.longitude - 0.012}%2C${position.latitude - 0.008}%2C${position.longitude + 0.012}%2C${position.latitude + 0.008}&layer=mapnik&marker=${position.latitude}%2C${position.longitude}`}
+                  loading="lazy"
+                  referrerPolicy="no-referrer"
+                />
+              </div>
+              <div className="mapLocation">📍 {locationName || "Your current location"}</div>
+              <a className="launchButton" href={`https://www.openstreetmap.org/?mlat=${position.latitude}&mlon=${position.longitude}#map=16/${position.latitude}/${position.longitude}`} target="_blank" rel="noreferrer">Open Full Map ↗</a>
+            </>
+          ) : <div className="placeholder">{weatherError || "Finding your location…"}</div>}
+        </article>
+
         <article className="card tasks">
           <div className="cardTop"><h2>✅ Today's Tasks</h2><span>{tasks.length}</span></div>
           {loadingTasks ? <div className="placeholder">Loading Todoist…</div> :
@@ -220,7 +240,7 @@ export default function Home() {
         </article>
       </section>
 
-      <footer>Simon’s Dashboard · Version 1.1</footer>
+      <footer>Simon’s Dashboard · Version 1.2</footer>
     </main>
   );
 }
