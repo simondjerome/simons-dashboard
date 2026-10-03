@@ -30,12 +30,6 @@ export const viewport = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
-        <link rel="manifest" href="/manifest.webmanifest" />
-        <link rel="icon" type="image/png" sizes="192x192" href="/api/icon?size=192" />
-        <link rel="icon" type="image/png" sizes="512x512" href="/api/icon?size=512" />
-        <link rel="apple-touch-icon" href="/api/icon?size=192" />
-      </head>
       <body><PWARegister />{children}</body>
     </html>
   );
