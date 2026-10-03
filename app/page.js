@@ -141,8 +141,8 @@ export default function Home() {
   });
 
   const weatherLink = weather
-    ? `https://weather.com/weather/today/l/${weather.latitude},${weather.longitude}`
-    : "https://weather.com/";
+    ? "https://www.theweathernetwork.com/en/city/canada/ontario/vaughan/current"
+    : "https://www.theweathernetwork.com/en/city/canada/ontario/vaughan/current";
 
   return (
     <main className="page">
