@@ -167,10 +167,10 @@ export default function Home() {
       <section className="quickLaunch card">
         <div className="cardTop"><h2>🚀 Quick Launch</h2><span>Apps</span></div>
         <div className="quickLaunchGrid">
-          <a className="quickApp" href="https://wa.me/" target="_blank" rel="noreferrer"><span className="quickIcon">💬</span><span>WhatsApp</span></a>
-          <a className="quickApp" href="https://mail.google.com/" target="_blank" rel="noreferrer"><span className="quickIcon">✉️</span><span>Gmail</span></a>
-          <a className="quickApp" href="https://teams.microsoft.com/" target="_blank" rel="noreferrer"><span className="quickIcon">👥</span><span>Teams</span></a>
-          <a className="quickApp" href="intent://calendar#Intent;package=com.samsung.android.calendar;end"><span className="quickIcon">📅</span><span>Calendar</span></a>
+          <a className="quickApp whatsapp" href="https://wa.me/" target="_blank" rel="noreferrer" aria-label="WhatsApp" title="WhatsApp"><span className="quickIcon">☎</span></a>
+          <a className="quickApp gmail" href="https://mail.google.com/" target="_blank" rel="noreferrer" aria-label="Gmail" title="Gmail"><span className="quickIcon">M</span></a>
+          <a className="quickApp teams" href="https://teams.microsoft.com/" target="_blank" rel="noreferrer" aria-label="Microsoft Teams" title="Microsoft Teams"><span className="quickIcon">T</span></a>
+          <button className="quickApp calendar" type="button" aria-label="Samsung Calendar" title="Samsung Calendar" onClick={() => { window.location.href = "content://com.android.calendar/time"; }}><span className="quickIcon">📅</span></button>
         </div>
       </section>
 
