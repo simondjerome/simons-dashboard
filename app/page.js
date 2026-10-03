@@ -95,7 +95,7 @@ export default function Home() {
 
   const loadRates = async () => {
     try {
-      const res = await fetch("https://api.frankfurter.app/latest?from=CAD&to=USD,GBP,EUR,AUD,SGD");
+      const res = await fetch("/api/currency", { cache: "no-store" });
       if (!res.ok) throw new Error();
       const data = await res.json();
       setRates(data.rates || null);
@@ -198,7 +198,7 @@ export default function Home() {
             {[["London","Europe/London","🇬🇧"],["Singapore","Asia/Singapore","🇸🇬"],["Brisbane","Australia/Brisbane","🇦🇺"]].map(([city,zone,flag]) => (
               <div className="clockRow" key={city}>
                 <div><strong>{flag} {city}</strong><span>{new Intl.DateTimeFormat("en-CA",{timeZone:zone,weekday:"short",month:"short",day:"numeric"}).format(now)}</span></div>
-                <time>{new Intl.DateTimeFormat("en-CA",{timeZone:zone,hour:"numeric",minute:"2-digit",second:"2-digit"}).format(now)}</time>
+                <time>{new Intl.DateTimeFormat("en-CA",{timeZone:zone,hour:"2-digit",minute:"2-digit",hour12:false}).format(now)}</time>
               </div>
             ))}
           </div>
@@ -279,7 +279,7 @@ export default function Home() {
         </article>
       </section>
 
-      <footer>Simon’s Dashboard · Version 1.4</footer>
+      <footer>Simon’s Dashboard · Version 1.4.1</footer>
     </main>
   );
 }
