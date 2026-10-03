@@ -8,3 +8,5 @@
 .quickApp.chatgpt{background:#111;color:white}.quickApp.gemini{background:#f3f6ff;color:#4f6bdc}
 
 .quickApp.addTask{background:var(--soft2);color:var(--text)}.quickApp.refreshApp{background:var(--soft2);color:var(--text);cursor:pointer}
+
+.currencyList,.clockList{display:flex;flex-direction:column}.currencyRow,.clockRow{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:13px 2px;border-bottom:1px solid var(--line)}.currencyRow:last-child,.clockRow:last-child{border-bottom:0}.currencyRow span{font-size:15px}.currencyRow strong{font-size:17px}.cardNote{font-size:10px;color:var(--muted);margin-top:12px}.clockRow>div{display:flex;flex-direction:column;gap:3px}.clockRow strong{font-size:15px}.clockRow span{font-size:11px;color:var(--muted)}.clockRow time{font-size:21px;font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap}
