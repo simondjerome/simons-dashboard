@@ -164,6 +164,16 @@ export default function Home() {
         </div>
       </header>
 
+      <section className="quickLaunch card">
+        <div className="cardTop"><h2>🚀 Quick Launch</h2><span>Apps</span></div>
+        <div className="quickLaunchGrid">
+          <a className="quickApp" href="https://wa.me/" target="_blank" rel="noreferrer"><span className="quickIcon">💬</span><span>WhatsApp</span></a>
+          <a className="quickApp" href="https://mail.google.com/" target="_blank" rel="noreferrer"><span className="quickIcon">✉️</span><span>Gmail</span></a>
+          <a className="quickApp" href="https://teams.microsoft.com/" target="_blank" rel="noreferrer"><span className="quickIcon">👥</span><span>Teams</span></a>
+          <a className="quickApp" href="intent://calendar#Intent;package=com.samsung.android.calendar;end"><span className="quickIcon">📅</span><span>Calendar</span></a>
+        </div>
+      </section>
+
       <section className="grid">
         <article className="card weather">
           <div className="cardTop"><h2>🌤️ Weather</h2><span>Today</span></div>
@@ -240,7 +250,7 @@ export default function Home() {
         </article>
       </section>
 
-      <footer>Simon’s Dashboard · Version 1.2</footer>
+      <footer>Simon’s Dashboard · Version 1.3</footer>
     </main>
   );
 }
