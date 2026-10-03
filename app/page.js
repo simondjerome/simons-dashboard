@@ -168,9 +168,11 @@ export default function Home() {
         <div className="cardTop"><h2>🚀 Quick Launch</h2><span>Apps</span></div>
         <div className="quickLaunchGrid">
           <a className="quickApp whatsapp" href="https://wa.me/" target="_blank" rel="noreferrer" aria-label="WhatsApp" title="WhatsApp"><span className="quickIcon">☎</span></a>
-          <a className="quickApp chatgpt" href="https://chatgpt.com/" aria-label="ChatGPT" title="ChatGPT"><span className="quickIcon">◎</span></a>
+          
           <a className="quickApp teams" href="msteams://" aria-label="Microsoft Teams" title="Microsoft Teams"><span className="quickIcon">T</span></a>
-          <a className="quickApp gemini" href="https://gemini.google.com/app" aria-label="Gemini" title="Gemini"><span className="quickIcon">✦</span></a>
+          <a className="quickApp addTask" href="https://todoist.com/app/task/new" target="_blank" rel="noreferrer" aria-label="Add Todoist task" title="Add Task"><span className="quickIcon">＋</span></a>
+          <button className="quickApp refreshApp" type="button" aria-label="Refresh dashboard" title="Refresh Dashboard" onClick={() => { loadWeather(); loadTasks(); loadNews(); }}><span className="quickIcon">↻</span></button>
+          
         </div>
       </section>
 
