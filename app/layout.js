@@ -30,6 +30,10 @@ export const viewport = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <link rel="manifest" href="/manifest.webmanifest" />
+        <meta name="theme-color" content="#18202b" />
+      </head>
       <body><PWARegister />{children}</body>
     </html>
   );
