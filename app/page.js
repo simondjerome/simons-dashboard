@@ -27,12 +27,29 @@ function weatherIcon(code) {
 export default function Home() {
   const [weather, setWeather] = useState(null);
   const [weatherError, setWeatherError] = useState("");
+  const [locationName, setLocationName] = useState("");
   const [tasks, setTasks] = useState([]);
   const [taskError, setTaskError] = useState("");
   const [news, setNews] = useState([]);
   const [newsError, setNewsError] = useState("");
   const [loadingTasks, setLoadingTasks] = useState(true);
   const [loadingNews, setLoadingNews] = useState(true);
+  const [theme, setTheme] = useState("light");
+
+  useEffect(() => {
+    const saved = localStorage.getItem("dashboard-theme");
+    const preferred = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    const initial = saved || preferred;
+    setTheme(initial);
+    document.documentElement.dataset.theme = initial;
+  }, []);
+
+  const toggleTheme = () => {
+    const next = theme === "dark" ? "light" : "dark";
+    setTheme(next);
+    document.documentElement.dataset.theme = next;
+    localStorage.setItem("dashboard-theme", next);
+  };
 
   const loadWeather = () => {
     setWeatherError("");
@@ -43,12 +60,24 @@ export default function Home() {
     navigator.geolocation.getCurrentPosition(async (pos) => {
       try {
         const { latitude, longitude } = pos.coords;
-        const res = await fetch(
+        const weatherRes = await fetch(
           `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=auto`
         );
-        if (!res.ok) throw new Error("Weather request failed");
-        const data = await res.json();
+        if (!weatherRes.ok) throw new Error("Weather request failed");
+        const data = await weatherRes.json();
         setWeather({ ...data, latitude, longitude });
+
+        try {
+          const placeRes = await fetch(
+            `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`
+          );
+          if (placeRes.ok) {
+            const place = await placeRes.json();
+            const city = place.city || place.locality || place.principalSubdivision;
+            const region = place.principalSubdivision;
+            setLocationName(city && region && city !== region ? `${city}, ${region}` : (city || region || ""));
+          }
+        } catch {}
       } catch {
         setWeatherError("Couldn't load the weather right now.");
       }
@@ -111,6 +140,10 @@ export default function Home() {
     weekday: "long", month: "long", day: "numeric"
   });
 
+  const weatherLink = weather
+    ? `https://weather.com/weather/today/l/${weather.latitude},${weather.longitude}`
+    : "https://weather.com/";
+
   return (
     <main className="page">
       <header className="header">
@@ -119,9 +152,14 @@ export default function Home() {
           <h1>Simon's Dashboard</h1>
           <p>{today}</p>
         </div>
-        <button className="refresh" onClick={() => { loadWeather(); loadTasks(); loadNews(); }}>
-          ↻ Refresh
-        </button>
+        <div className="headerActions">
+          <button className="iconButton" onClick={toggleTheme} aria-label="Toggle light and dark mode">
+            {theme === "dark" ? "☀️" : "🌙"}
+          </button>
+          <button className="refresh" onClick={() => { loadWeather(); loadTasks(); loadNews(); }}>
+            ↻ Refresh
+          </button>
+        </div>
       </header>
 
       <section className="grid">
@@ -129,6 +167,7 @@ export default function Home() {
           <div className="cardTop"><h2>🌤️ Weather</h2><span>Today</span></div>
           {weather ? (
             <>
+              {locationName && <div className="locationName">📍 {locationName}</div>}
               <div className="weatherMain">
                 <div className="weatherIcon">{weatherIcon(weather.current.weather_code)}</div>
                 <div>
@@ -142,6 +181,7 @@ export default function Home() {
                 <div><b>Rain chance</b><span>{weather.daily.precipitation_probability_max[0]}%</span></div>
                 <div><b>Wind</b><span>{Math.round(weather.current.wind_speed_10m)} km/h</span></div>
               </div>
+              <a className="launchButton" href={weatherLink} target="_blank" rel="noreferrer">Open Full Weather ↗</a>
             </>
           ) : <div className="placeholder">{weatherError || "Finding your location…"}</div>}
         </article>
@@ -162,10 +202,11 @@ export default function Home() {
                </label>
              ))}
            </div>}
+          <a className="launchButton" href="https://todoist.com/app/today" target="_blank" rel="noreferrer">Open Todoist ↗</a>
         </article>
 
         <article className="card news">
-          <div className="cardTop"><h2>🌎 World News</h2><span>Latest</span></div>
+          <div className="cardTop"><h2>📰 Latest News</h2><span>CBC</span></div>
           {loadingNews ? <div className="placeholder">Loading headlines…</div> :
            newsError ? <div className="error">{newsError}</div> :
            <div className="newsList">
@@ -179,7 +220,7 @@ export default function Home() {
         </article>
       </section>
 
-      <footer>Simon’s Dashboard · Version 1</footer>
+      <footer>Simon’s Dashboard · Version 1.1</footer>
     </main>
   );
 }
