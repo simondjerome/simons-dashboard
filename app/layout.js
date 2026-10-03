@@ -1,4 +1,5 @@
 import "./globals.css";
+import PWARegister from "./pwa-register";
 
 export const metadata = {
   title: "Simon's Dashboard",
@@ -35,7 +36,7 @@ export default function RootLayout({ children }) {
         <link rel="icon" type="image/png" sizes="512x512" href="/api/icon?size=512" />
         <link rel="apple-touch-icon" href="/api/icon?size=192" />
       </head>
-      <body>{children}</body>
+      <body><PWARegister />{children}</body>
     </html>
   );
 }
