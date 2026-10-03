@@ -168,9 +168,9 @@ export default function Home() {
         <div className="cardTop"><h2>🚀 Quick Launch</h2><span>Apps</span></div>
         <div className="quickLaunchGrid">
           <a className="quickApp whatsapp" href="https://wa.me/" target="_blank" rel="noreferrer" aria-label="WhatsApp" title="WhatsApp"><span className="quickIcon">☎</span></a>
-          <a className="quickApp gmail" href="https://mail.google.com/" target="_blank" rel="noreferrer" aria-label="Gmail" title="Gmail"><span className="quickIcon">M</span></a>
-          <a className="quickApp teams" href="https://teams.microsoft.com/" target="_blank" rel="noreferrer" aria-label="Microsoft Teams" title="Microsoft Teams"><span className="quickIcon">T</span></a>
-          <button className="quickApp calendar" type="button" aria-label="Samsung Calendar" title="Samsung Calendar" onClick={() => { window.location.href = "content://com.android.calendar/time"; }}><span className="quickIcon">📅</span></button>
+          <a className="quickApp gmail" href="intent://inbox#Intent;scheme=googlegmail;package=com.google.android.gm;end" aria-label="Gmail" title="Gmail"><span className="quickIcon">M</span></a>
+          <a className="quickApp teams" href="msteams://" aria-label="Microsoft Teams" title="Microsoft Teams"><span className="quickIcon">T</span></a>
+          <button className="quickApp calendar" type="button" aria-label="Samsung Calendar" title="Samsung Calendar" onClick={() => { window.location.href = "intent://calendar#Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;package=com.samsung.android.calendar;end"; }}><span className="quickIcon">📅</span></button>
         </div>
       </section>
 
