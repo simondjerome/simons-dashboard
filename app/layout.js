@@ -4,15 +4,37 @@ export const metadata = {
   title: "Simon's Dashboard",
   description: "Personal weather, Todoist tasks and CBC news dashboard",
   manifest: "/manifest.webmanifest",
+  themeColor: "#18202b",
   icons: {
-    icon: "/icon.svg",
-    apple: "/icon.svg"
+    icon: [
+      { url: "/api/icon?size=192", type: "image/png", sizes: "192x192" },
+      { url: "/api/icon?size=512", type: "image/png", sizes: "512x512" }
+    ],
+    shortcut: "/api/icon?size=192",
+    apple: "/api/icon?size=192"
+  },
+  appleWebApp: {
+    capable: true,
+    title: "Simon's Dashboard",
+    statusBarStyle: "default"
   }
+};
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#18202b"
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <link rel="manifest" href="/manifest.webmanifest" />
+        <link rel="icon" type="image/png" sizes="192x192" href="/api/icon?size=192" />
+        <link rel="icon" type="image/png" sizes="512x512" href="/api/icon?size=512" />
+        <link rel="apple-touch-icon" href="/api/icon?size=192" />
+      </head>
       <body>{children}</body>
     </html>
   );
